@@ -11,16 +11,21 @@ class ProductManager {
   }
 
   agregarProducto = (title, description, price, thumbnail, stock) => {
+    if (!title || !description || !price || !thumbnail) return "Todos los campos son obligatorios."
+    const codeExiste = this.products.some((producto) => producto.code === this.generarID());
+    if (codeExiste) return "El código ID del producto ya existe";
+
     const producto = {
       title,
       description,
       price,
       thumbnail,
-      code: this.generarID(),
       stock: stock || 80,
+      code: this.generarID(),
     };
 
     this.products.push(producto);
+    return "Producto agregado exitosamente.";
   };
 
   mostrarProductos = () => {
@@ -28,9 +33,7 @@ class ProductManager {
   };
 
   buscarProductosID = (ingresarID) => {
-    let encontrado = this.products.filter(
-      (producto) => producto.code === ingresarID
-    );
+    let encontrado = this.products.filter((producto) => producto.code === ingresarID);
     if (encontrado.length > 0) {
       return encontrado;
     } else {
@@ -40,9 +43,10 @@ class ProductManager {
 }
 
 const producto = new ProductManager();
-producto.agregarProducto("Taza", "Taza sublimable", 50, "#", "30");
-producto.agregarProducto("TV", "Samdung 21Pulg", 20560, "#", "80");
-producto.agregarProducto("Pañales Pampers", "Confort y cuidado", 1020, "#", "");
+console.log(producto.agregarProducto("Taza", "Taza sublimable", 50, "#", "30"));
+console.log(producto.agregarProducto("TV", "Samdung 21Pulg", 20560, "#", "70")); 
+console.log(producto.agregarProducto("Pañales Pampers", "Confort y cuidado", 1020, "#", "50")); 
+console.log(producto.agregarProducto("Taza 2", "", "", "#", "30")); //Todos los campos son obligatorios.
 
 console.log("Listado de Productos:", producto.mostrarProductos());
 console.log("----------------------------------------------");
